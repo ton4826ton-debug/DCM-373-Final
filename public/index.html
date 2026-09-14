@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCM Walailak | หลักสูตรดิจิทัลคอนเทนต์และสื่อ</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#home">
+      <span class="brand-text">
+        <span class="brand-mark">DCM</span>
+        <span class="brand-sub">Walailak University</span>
+      </span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#highlights">จุดเด่นหลักสูตร</a>
+      <a href="#curriculum">โครงสร้างหลักสูตร</a>
+      <a href="#careers">เส้นทางอาชีพ</a>
+      <a href="#outcomes">ผลลัพธ์การเรียนรู้</a>
+      <a href="#admission">สมัครเรียน</a>
+      <a href="#contact">ติดต่อ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="สลับโหมดสี" title="สลับโหมดสี">🌙</button>
+      <button class="btn btn-primary nav-cta" id="openChatNav">ถาม DCM Bot</button>
+      <button class="nav-toggle" id="navToggle" aria-label="เปิดเมนู">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <p class="eyebrow" style="text-align:center;">สำนักวิชาสารสนเทศศาสตร์ · มหาวิทยาลัยวลัยลักษณ์</p>
+      <h1>สารสนเทศศาสตรบัณฑิต<br><span class="accent">สาขาดิจิทัลคอนเทนต์และสื่อ</span></h1>
+      <p class="hero-desc">
+        หลักสูตรปรับปรุง ปีการศึกษา 2567 — ผลิตบัณฑิตให้มีสมรรถนะด้านการออกแบบ พัฒนา
+        และเผยแพร่ดิจิทัลคอนเทนต์ ทั้งสื่อการเรียนรู้ สื่อการตลาดดิจิทัล และการจัดการคอนเทนต์
+        ในองค์กรสารสนเทศดิจิทัล พร้อมฝึกงานจริงไม่น้อยกว่า 8 เดือนก่อนจบการศึกษา
+      </p>
+
+      <!-- Prompt launcher: hero-level entry point into the chatbot -->
+      <div class="prompt-launcher">
+        <form id="heroPromptForm">
+          <input type="text" id="heroPromptInput" placeholder="ถามอะไรก็ได้เกี่ยวกับหลักสูตร DCM เช่น เรียนกี่ปี, จบแล้วทำงานอะไรได้บ้าง...">
+          <button type="submit" aria-label="ส่งคำถาม">➤</button>
+        </form>
+      </div>
+      <div class="prompt-chips" id="heroChips"></div>
+      <div class="prompt-recent" id="heroRecent"></div>
+
+      <div class="hero-actions">
+        <a class="btn btn-ghost" href="#curriculum">ดูโครงสร้างหลักสูตร</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>123</strong><span>หน่วยกิตตลอดหลักสูตร</span></div>
+        <div><strong>4</strong><span>ปี ระบบทวิภาค</span></div>
+        <div><strong>4</strong><span>กลุ่มวิชาโทให้เลือก</span></div>
+        <div><strong>8+</strong><span>เดือนสหกิจศึกษา</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTS -->
+  <section class="section" id="highlights">
+    <div class="section-inner">
+      <p class="kicker">จุดเด่นหลักสูตร</p>
+      <h2>ทำไมต้องเรียน DCM</h2>
+      <div class="grid grid-3" id="highlightsGrid"></div>
+    </div>
+  </section>
+
+  <!-- CURRICULUM -->
+  <section class="section section-alt" id="curriculum">
+    <div class="section-inner">
+      <p class="kicker">โครงสร้างหลักสูตร</p>
+      <h2>เรียนอะไรบ้าง 123 หน่วยกิต</h2>
+
+      <div class="credit-bars" id="creditBars"></div>
+
+      <div class="tabs" id="yearTabs">
+        <button class="tab active" data-year="1">ปี 1</button>
+        <button class="tab" data-year="2">ปี 2</button>
+        <button class="tab" data-year="3">ปี 3</button>
+        <button class="tab" data-year="4">ปี 4</button>
+      </div>
+      <div class="year-panel" id="yearPanel"></div>
+
+      <h3 class="sub-h">เลือกวิชาโทได้ 1 ใน 4 กลุ่ม (15 หน่วยกิต)</h3>
+      <div class="grid grid-2" id="minorTracks"></div>
+    </div>
+  </section>
+
+  <!-- CAREERS -->
+  <section class="section" id="careers">
+    <div class="section-inner">
+      <p class="kicker">เส้นทางอาชีพ</p>
+      <h2>จบแล้วทำงานอะไรได้บ้าง</h2>
+      <div class="grid grid-2" id="careersGrid"></div>
+    </div>
+  </section>
+
+  <!-- OUTCOMES -->
+  <section class="section section-alt" id="outcomes">
+    <div class="section-inner">
+      <p class="kicker">ผลลัพธ์การเรียนรู้ของหลักสูตร (PLOs)</p>
+      <h2>บัณฑิตที่จบจะมีคุณสมบัติอย่างไร</h2>
+      <div class="plo-cols" id="ploCols"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-inner">
+      <p class="kicker">คำถามที่พบบ่อย</p>
+      <h2>สงสัยอะไรอีกไหม ลองถาม DCM Bot ได้เลย</h2>
+      <div class="faq-list" id="faqList"></div>
+      <button class="btn btn-primary" id="openChatFaq">💬 เปิดแชทถามคำถามเพิ่มเติม</button>
+    </div>
+  </section>
+
+  <!-- ADMISSION -->
+  <section class="section section-alt" id="admission">
+    <div class="section-inner" style="text-align:center;">
+      <p class="kicker">สมัครเรียน</p>
+      <h2>การสมัครเข้าศึกษาต่อในหลักสูตร DCM</h2>
+      <div id="admissionText"></div>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:8px;">
+        <a class="btn btn-primary" href="https://entry.wu.ac.th" target="_blank" rel="noopener">ไปที่ระบบรับสมัคร entry.wu.ac.th ↗</a>
+        <a class="btn btn-ghost" href="https://informatics.wu.ac.th/bachelors-degree/digital-content-and-media/" target="_blank" rel="noopener">ดูหน้าหลักสูตรฉบับทางการ ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <footer class="section footer" id="contact">
+    <div class="section-inner">
+      <p class="kicker">ติดต่อ</p>
+      <div class="footer-brand">
+        <img src="assets/logo-school.png" alt="ตราสำนักวิชาสารสนเทศศาสตร์">
+        <img src="assets/logo-dcm.jpg" alt="โลโก้ DCM">
+      </div>
+      <h2>สำนักวิชาสารสนเทศศาสตร์ มหาวิทยาลัยวลัยลักษณ์</h2>
+      <div class="contact-grid" id="contactGrid"></div>
+      <p class="disclaimer">
+        เว็บไซต์นี้เป็นโปรเจกต์การศึกษา จัดทำขึ้นเพื่อประกอบการเรียนรายวิชาในหลักสูตร
+        ข้อมูลรวบรวมจากเอกสารหลักสูตร (มคอ.2) และเว็บไซต์ทางการของสำนักวิชาสารสนเทศศาสตร์
+        กรุณาตรวจสอบข้อมูลล่าสุดที่ informatics.wu.ac.th ก่อนตัดสินใจสมัครเรียน
+      </p>
+    </div>
+  </footer>
+</main>
+
+<!-- CHAT WIDGET -->
+<div class="chat-tooltip" id="chatTooltip" hidden>
+  <span>มีข้อสงสัยเรื่องหลักสูตร สอบถามได้นะ! 👋</span>
+  <button id="closeTooltip" aria-label="ปิดข้อความ">✕</button>
+</div>
+
+<button class="chat-launcher" id="chatLauncher" aria-label="เปิดแชท DCM Bot">
+  <span class="chat-launcher-ring"></span>
+  <span class="chat-launcher-icon" id="chatLauncherIcon">✨</span>
+  <span class="chat-launcher-text" id="chatLauncherText">ถาม DCM Bot</span>
+</button>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <div>
+      <strong>DCM Bot</strong>
+      <span>ผู้ช่วยตอบคำถามหลักสูตร DCM</span>
+    </div>
+    <button id="closeChat" aria-label="ปิดแชท">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="msg bot">
+      สวัสดีครับ 👋 ผมคือ DCM Bot ผู้ช่วยตอบคำถามเกี่ยวกับหลักสูตรดิจิทัลคอนเทนต์และสื่อ มวล.
+      ลองถามได้เลย เช่น "เรียนกี่ปี" หรือ "จบแล้วทำงานอะไรได้บ้าง"
+    </div>
+  </div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <form class="chat-input" id="chatForm">
+    <input type="text" id="chatInput" placeholder="พิมพ์คำถามเกี่ยวกับหลักสูตร..." autocomplete="off">
+    <button type="submit">ส่ง</button>
+  </form>
+</div>
+
+<script src="data-loader.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
