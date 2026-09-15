@@ -40,16 +40,19 @@ ${JSON.stringify(curriculum)}`;
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-async function callGemini(messages, attempt = 1) {
+async function callGemini(messages, attempt = 1, disableThinking = true) {
   const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
-  // Gemini uses 'user' / 'model' roles (not 'assistant'), and the system
-  // prompt goes in a separate `systemInstruction` field.
   const contents = messages.map(m => ({
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.content }],
   }));
+
+  const generationConfig = { maxOutputTokens: 2048 };
+  if (disableThinking) {
+    generationConfig.thinkingConfig = { thinkingBudget: 0 };
+  }
 
   const res = await fetch(url, {
     method: 'POST',
@@ -57,23 +60,25 @@ async function callGemini(messages, attempt = 1) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents,
-      generationConfig: { maxOutputTokens: 700 },
+      generationConfig,
     }),
   });
 
   if (!res.ok) {
     const errText = await res.text();
-    // Google's free-tier Flash models occasionally return 503 "model is
-    // overloaded" — that's transient, not a config problem, so retry a
-    // couple of times with a short backoff before giving up.
     if (res.status === 503 && attempt < 5) {
       await sleep(attempt * 1500);
-      return callGemini(messages, attempt + 1);
+      return callGemini(messages, attempt + 1, disableThinking);
+    }
+    if (res.status === 400 && disableThinking) {
+      return callGemini(messages, attempt, false);
     }
     throw new Error(`Gemini API error ${res.status}: ${errText}`);
   }
   const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const answerParts = parts.filter(p => !p.thought);
+  return answerParts.map(p => p.text || '').join('').trim();
 }
 
 async function callAnthropic(messages) {
