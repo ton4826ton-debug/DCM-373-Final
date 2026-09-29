@@ -82,7 +82,7 @@ async function callGemini(messages, attempt = 1, disableThinking = true) {
 }
 
 async function callAnthropic(messages) {
-  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022';
+  const model = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5';
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -128,7 +128,9 @@ async function callOpenAI(messages) {
 }
 
 // Very small fallback so the demo still works with zero API keys configured.
-function fallbackAnswer(question) {
+// aiFailed = true means a key IS set but the AI call errored, so the reply
+// must not claim the key is missing.
+function fallbackAnswer(question, aiFailed = false) {
   const q = question.toLowerCase();
   const hit = curriculum.faq_seed.find(f => q.includes(f.q.slice(0, 6).toLowerCase()));
   if (hit) return hit.a;
@@ -148,8 +150,11 @@ function fallbackAnswer(question) {
     return curriculum.faq_seed.find(f => f.q.includes('สหกิจศึกษา'))?.a
       || 'มีสหกิจศึกษารวมไม่น้อยกว่า 8 เดือน';
   }
-  return `ขออภัยครับ ระบบยังไม่ได้เชื่อมต่อ AI API (ยังไม่ได้ตั้งค่า GEMINI_API_KEY, ANTHROPIC_API_KEY หรือ OPENAI_API_KEY ใน .env)
-ตอนนี้ตอบได้เฉพาะคำถามพื้นฐาน เช่น "เรียนกี่ปี", "จบแล้วทำงานอะไรได้บ้าง", "มีวิชาโทอะไรบ้าง", "มีสหกิจศึกษาไหม"
+
+  const head = aiFailed
+    ? 'ตอนนี้ตอบได้เฉพาะคำถามพื้นฐาน'
+    : 'ขออภัยครับ ระบบยังไม่ได้เชื่อมต่อ AI API (ยังไม่ได้ตั้งค่า GEMINI_API_KEY, ANTHROPIC_API_KEY หรือ OPENAI_API_KEY ใน .env)\nตอนนี้ตอบได้เฉพาะคำถามพื้นฐาน';
+  return `${head} เช่น "เรียนกี่ปี", "จบแล้วทำงานอะไรได้บ้าง", "มีวิชาโทอะไรบ้าง", "มีสหกิจศึกษาไหม"
 กรุณาติดต่อสำนักวิชาสารสนเทศศาสตร์ที่ ${curriculum.program.contact.email} สำหรับคำถามอื่น ๆ`;
 }
 
@@ -172,14 +177,14 @@ app.post('/api/chat', async (req, res) => {
     }
     return res.json({ reply: fallbackAnswer(lastUserMsg) });
   } catch (err) {
-    console.error(err);
+    console.error('[AI error]', err.message);
     // Even if the AI call fails (e.g. Google's servers are overloaded —
     // a transient 503), don't leave the widget dead: answer with the
     // keyword fallback and say briefly why, so a live demo keeps working.
     const messages = Array.isArray(req.body.messages) ? req.body.messages : [];
     const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.content || '';
     const note = 'ขณะนี้เชื่อมต่อ AI ไม่สำเร็จชั่วคราว (เซิร์ฟเวอร์ AI อาจมีคนใช้งานเยอะ) ขอตอบแบบพื้นฐานไปก่อนนะครับ:\n\n';
-    res.json({ reply: note + fallbackAnswer(lastUserMsg) });
+    res.json({ reply: note + fallbackAnswer(lastUserMsg, true) });
   }
 });
 
